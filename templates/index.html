@@ -39,13 +39,14 @@
         <h6 class = "right "><a href= {{ url }} target="_blank">{{ url }}</a></h6>
            
         <br>
+        <h3 id="output_pred"></h3>
         <h3 id="prediction"></h3>
         <button class="button2" id="button2" role="button" onclick="window.open('{{url}}')" target="_blank" >Still want to Continue</button>
         <button class="button1" id="button1" role="button"  onclick="window.open('{{url}}')" target="_blank">Continue</button>
     </div> 
 </div>
 <br>
-<p>©2021 VAIBHAV BICHAVE</p>
+<p>BY SEETARAM NAIK</p>
 </div>
 
     <!-- JavaScript -->
@@ -78,6 +79,7 @@
                 document.getElementById("prediction").innerHTML = label ;
                 document.getElementById("button2").style.display="block";
             }
+            
         
     </script>
     

@@ -1,3 +1,4 @@
+
 import ipaddress
 import re
 import urllib.request
@@ -12,35 +13,32 @@ from dateutil.parser import parse as date_parse
 from urllib.parse import urlparse
 
 class FeatureExtraction:
-    features = []
-    def __init__(self,url):
-        self.features = []
+    def __init__(self, url):
         self.url = url
         self.domain = ""
         self.whois_response = ""
         self.urlparse = ""
         self.response = ""
         self.soup = ""
+        self.features = []
 
         try:
             self.response = requests.get(url)
             self.soup = BeautifulSoup(self.response.text, 'html.parser')
-        except:
-            pass
+        except requests.exceptions.RequestException as e:
+            print("Error fetching URL:", e)
 
         try:
             self.urlparse = urlparse(url)
             self.domain = self.urlparse.netloc
-        except:
-            pass
+        except ValueError as e:
+            print("Error parsing URL:", e)
 
         try:
             self.whois_response = whois.whois(self.domain)
-        except:
-            pass
+        except whois.exceptions.FailedParsingWhoisOutput as e:
+            print("Error fetching WHOIS data:", e)
 
-
-        
 
         self.features.append(self.UsingIp())
         self.features.append(self.longUrl())
@@ -77,36 +75,47 @@ class FeatureExtraction:
         self.features.append(self.StatsReport())
 
 
-     # 1.UsingIp
+
+
     def UsingIp(self):
+        """
+        Determines if the URL is using an IP address instead of a domain name.
+        Returns:
+            -1 if the URL is using an IP address, 1 otherwise.
+        """
         try:
-            ipaddress.ip_address(self.url)
+            ip = ipaddress.ip_address(self.domain)
             return -1
-        except:
+        except ValueError:
             return 1
 
-    # 2.longUrl
     def longUrl(self):
+        """
+        Determines if the URL is longer than 75 characters.
+        Returns:
+            1 if the URL is shorter than 54 characters, 0 if it is between 54 and 75 characters, -1 if it is longer than 75 characters.
+        """
         if len(self.url) < 54:
             return 1
-        if len(self.url) >= 54 and len(self.url) <= 75:
+        elif len(self.url) <= 75:
             return 0
-        return -1
-
-    # 3.shortUrl
-    def shortUrl(self):
-        match = re.search('bit\.ly|goo\.gl|shorte\.st|go2l\.ink|x\.co|ow\.ly|t\.co|tinyurl|tr\.im|is\.gd|cli\.gs|'
-                    'yfrog\.com|migre\.me|ff\.im|tiny\.cc|url4\.eu|twit\.ac|su\.pr|twurl\.nl|snipurl\.com|'
-                    'short\.to|BudURL\.com|ping\.fm|post\.ly|Just\.as|bkite\.com|snipr\.com|fic\.kr|loopt\.us|'
-                    'doiop\.com|short\.ie|kl\.am|wp\.me|rubyurl\.com|om\.ly|to\.ly|bit\.do|t\.co|lnkd\.in|'
-                    'db\.tt|qr\.ae|adf\.ly|goo\.gl|bitly\.com|cur\.lv|tinyurl\.com|ow\.ly|bit\.ly|ity\.im|'
-                    'q\.gs|is\.gd|po\.st|bc\.vc|twitthis\.com|u\.to|j\.mp|buzurl\.com|cutt\.us|u\.bb|yourls\.org|'
-                    'x\.co|prettylinkpro\.com|scrnch\.me|filoops\.info|vzturl\.com|qr\.net|1url\.com|tweez\.me|v\.gd|tr\.im|link\.zip\.net', self.url)
-        if match:
+        else:
             return -1
-        return 1
 
-    # 4.Symbol@
+ # 3.shortUrl
+    def shortUrl(self):
+         match = re.search('bit\.ly|goo\.gl|shorte\.st|go2l\.ink|x\.co|ow\.ly|t\.co|tinyurl|tr\.im|is\.gd|cli\.gs|'
+                'yfrog\.com|migre\.me|ff\.im|tiny\.cc|url4\.eu|twit\.ac|su\.pr|twurl\.nl|snipurl\.com|'
+                'short\.to|BudURL\.com|ping\.fm|post\.ly|Just\.as|bkite\.com|snipr\.com|fic\.kr|loopt\.us|'
+                'doiop\.com|short\.ie|kl\.am|wp\.me|rubyurl\.com|om\.ly|to\.ly|bit\.do|t\.co|lnkd\.in|'
+                'db\.tt|qr\.ae|adf\.ly|cur\.lv|tinyurl\.com|ow\.ly|bit\.ly|ity\.im|'
+                'q\.gs|is\.gd|po\.st|bc\.vc|twitthis\.com|u\.to|j\.mp|buzurl\.com|cutt\.us|u\.bb|yourls\.org|'
+                'x\.co|prettylinkpro\.com|scrnch\.me|filoops\.info|vzturl\.com|qr\.net|1url\.com|tweez\.me|v\.gd|tr\.im|link\.zip\.net', self.url)
+         if match:
+              return -1
+         return 1
+
+ # 4.Symbol@
     def symbol(self):
         if re.findall("@",self.url):
             return -1
@@ -147,7 +156,7 @@ class FeatureExtraction:
         except:
             return 1
 
-    # 9.DomainRegLen
+      # 9.DomainRegLen
     def DomainRegLen(self):
         try:
             expiration_date = self.whois_response.expiration_date
@@ -191,8 +200,9 @@ class FeatureExtraction:
             return 1
         except:
             return -1
+        
 
-    # 12. HTTPSDomainURL
+     # 12. HTTPSDomainURL
     def HTTPSDomainURL(self):
         try:
             if 'https' in self.domain:
@@ -204,7 +214,7 @@ class FeatureExtraction:
     # 13. RequestURL
     def RequestURL(self):
         try:
-            
+            i,success = 0,0
             for img in self.soup.find_all('img', src=True):
                 dots = [x.start(0) for x in re.finditer('\.', img['src'])]
                 if self.url in img['src'] or self.domain in img['src'] or len(dots) == 1:
@@ -241,29 +251,30 @@ class FeatureExtraction:
                 return 0
         except:
             return -1
-    
-    # 14. AnchorURL
+
+    # 14. AnchorURL    NEW CODE BY CHATGPT
     def AnchorURL(self):
         try:
-            i,unsafe = 0,0
+            i, unsafe = 0, 0
             for a in self.soup.find_all('a', href=True):
                 if "#" in a['href'] or "javascript" in a['href'].lower() or "mailto" in a['href'].lower() or not (self.url in a['href'] or self.domain in a['href']):
-                    unsafe = unsafe + 1
+                     unsafe = unsafe + 1
                 i = i + 1
 
-            try:
-                percentage = unsafe / float(i) * 100
-                if percentage < 31.0:
-                    return 1
-                elif ((percentage >= 31.0) and (percentage < 67.0)):
-                    return 0
-                else:
-                    return -1
-            except:
+            percentage = (unsafe / float(i)) * 100
+            if percentage < 31.0:
+                return 1
+            elif ((percentage >= 31.0) and (percentage < 67.0)):
+                return 0
+            else:
                 return -1
 
-        except:
+        except (KeyError, TypeError):
             return -1
+        except ZeroDivisionError:
+            return 0
+
+ 
 
     # 15. LinksInScriptTags
     def LinksInScriptTags(self):
@@ -271,13 +282,13 @@ class FeatureExtraction:
             i,success = 0,0
         
             for link in self.soup.find_all('link', href=True):
-                dots = [x.start(0) for x in re.finditer('\.', link['href'])]
+                dots = [x.start(0) for x in re.finditer(r'\.', link['href'])]
                 if self.url in link['href'] or self.domain in link['href'] or len(dots) == 1:
                     success = success + 1
                 i = i+1
 
             for script in self.soup.find_all('script', src=True):
-                dots = [x.start(0) for x in re.finditer('\.', script['src'])]
+                dots = [x.start(0) for x in re.finditer(r'\.', script['src'])]
                 if self.url in script['src'] or self.domain in script['src'] or len(dots) == 1:
                     success = success + 1
                 i = i+1
@@ -295,7 +306,9 @@ class FeatureExtraction:
         except:
             return -1
 
-    # 16. ServerFormHandler
+
+
+     # 16. ServerFormHandler
     def ServerFormHandler(self):
         try:
             if len(self.soup.find_all('form', action=True))==0:
@@ -330,8 +343,11 @@ class FeatureExtraction:
                 return -1
         except:
             return -1
+        
 
-    # 19. WebsiteForwarding
+
+
+     # 19. WebsiteForwarding
     def WebsiteForwarding(self):
         try:
             if len(self.response.history) <= 1:
@@ -363,7 +379,8 @@ class FeatureExtraction:
         except:
              return -1
 
-    # 22. UsingPopupWindow
+
+     # 22. UsingPopupWindow
     def UsingPopupWindow(self):
         try:
             if re.findall(r"alert\(", self.response.text):
@@ -400,8 +417,9 @@ class FeatureExtraction:
             return -1
         except:
             return -1
+        
 
-    # 25. DNSRecording    
+     # 25. DNSRecording    
     def DNSRecording(self):
         try:
             creation_date = self.whois_response.creation_date
@@ -419,20 +437,23 @@ class FeatureExtraction:
         except:
             return -1
 
+
+
     # 26. WebsiteTraffic   
     def WebsiteTraffic(self):
         try:
-            rank = BeautifulSoup(urllib.request.urlopen("http://data.alexa.com/data?cli=10&dat=s&url=" + self.url).read(), "xml").find("REACH")['RANK']
+            rank = BeautifulSoup(urllib.request.urlopen("http://data.alexa.com/data?cli=10&dat=s&url=" + self.url).read(), "lxml").find("REACH")['RANK']
             if (int(rank) < 100000):
                 return 1
             return 0
         except :
             return -1
+        
 
-    # 27. PageRank
+      # 27. PageRank
     def PageRank(self):
         try:
-            prank_checker_response = requests.post("https://www.checkpagerank.net/index.php", {"name": self.domain})
+            prank_checker_response = requests.post("https://openpagerank.com/api/v1.0/getPageRank", {"name": self.domain})
 
             global_rank = int(re.findall(r"Global Rank: ([0-9]+)", prank_checker_response.text)[0])
             if global_rank > 0 and global_rank < 100000:
@@ -440,8 +461,7 @@ class FeatureExtraction:
             return -1
         except:
             return -1
-            
-
+        
     # 28. GoogleIndex
     def GoogleIndex(self):
         try:
@@ -453,10 +473,13 @@ class FeatureExtraction:
         except:
             return 1
 
+
     # 29. LinksPointingToPage
     def LinksPointingToPage(self):
         try:
-            number_of_links = len(re.findall(r"<a href=", self.response.text))
+            soup = BeautifulSoup(self.response.text, 'html.parser')
+            links = soup.find_all('a')
+            number_of_links = len(links)
             if number_of_links == 0:
                 return 1
             elif number_of_links <= 2:
@@ -465,8 +488,8 @@ class FeatureExtraction:
                 return -1
         except:
             return -1
-
-    # 30. StatsReport
+    
+     # 30. StatsReport
     def StatsReport(self):
         try:
             url_match = re.search(
@@ -488,3 +511,16 @@ class FeatureExtraction:
     
     def getFeaturesList(self):
         return self.features
+
+
+
+
+
+
+
+
+
+
+
+
+
