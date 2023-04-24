@@ -10,12 +10,23 @@
 body {
   padding: 10% 5%;
   background: #0f2027;
-  background: linear-gradient(to right,#2c5364, #203a43, #0f2027);
+  /* background: linear-gradient(to right,#2c5364, #203a43, #0f2027); */
+  background-image: url("./background.jpg");
+  background-repeat: no-repeat;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+
   justify-content: center;
   align-items: center; 
   height: 100vh;
   color: #fff;
 }
+
+
+
+
 
 .form__label {
   font-family: 'Roboto', sans-serif;
