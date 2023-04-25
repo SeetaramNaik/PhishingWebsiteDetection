@@ -1,0 +1,75 @@
+body {
+    font-family: Arial, sans-serif;
+    font-size: 16px;
+    line-height: 1.5;
+    margin: 0;
+    padding: 0;
+    background: rgb(39,40,42);
+background: linear-gradient(90deg, rgba(39,40,42,0.9445028011204482) 16%, rgba(91,103,112,1) 49%, rgba(39,40,42,1) 81%);
+    color: #fff;
+
+    background-image: url("./background1.jpg");
+    background-repeat: no-repeat;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+}
+
+.header {
+    background-color: #050758;
+    color: #fff;
+    padding: 15px;
+    text-align: center;
+    font-size: 30px;
+    margin: 20px;
+    /* margin-top: 20px; */
+    border-radius: 40px;
+}
+
+h1, h2 {
+    margin-top: 0;
+}
+
+main {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+section {
+    margin-bottom: 40px;
+}
+
+ul {
+    list-style: disc;
+    margin-left: 20px;
+
+}
+.links>li>a{
+    color:#928d8d;
+}
+
+a {
+    color: #333;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+.check-btn>a{
+    /* display: flex;
+    align-items: center;
+    justify-content: center; */
+    background-color: #060666;
+    color: #f6f6f6;
+    width: auto;
+    margin-bottom: 30px;
+    padding: 20px;
+    border-radius: 50px;
+}
+.check-btn{
+    margin-bottom: 70px;
+}

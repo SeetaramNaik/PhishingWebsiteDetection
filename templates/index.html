@@ -4,86 +4,45 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="This website is develop for identify the safety of url.">
-    <meta name="keywords" content="phishing url,phishing,cyber security,machine learning,classifier,python">
-
-
-    <!-- BootStrap -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
-        integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
-        
-    <link href="static/styles.css" rel="stylesheet">
-    <title>URL detection</title>
-    
+    <link rel="stylesheet" href="../static/home.css">
+    <title>Phishing Website Detection</title>
 </head>
-
 <body>
-    
-<div class="container">
-    <div class="row">
-        <div class="form col-md" id="form1">
-            <h2>PHISHING URL DETECTION</h2>
-    
-            <br>
-            <form action="/" method ="post">
-                <input type="text" class="form__input" name ='url' id="url" placeholder="Enter URL" required="" />
-                <label for="url" class="form__label">URL</label>
-                <button class="button" role="button" >Check here</button>
-            </form>
-           
+    <div class="header">
+        <h1>Phishing Website Detection</h1>
     </div>
-    
-    <div class="col-md" id="form2">
-        
-        <br>
-        <h6 class = "right "><a href= {{ url }} target="_blank">{{ url }}</a></h6>
-           
-        <br>
-        <h3 id="output_pred"></h3>
-        <h3 id="prediction"></h3>
-        <button class="button2" id="button2" role="button" onclick="window.open('{{url}}')" target="_blank" >Still want to Continue</button>
-        <button class="button1" id="button1" role="button"  onclick="window.open('{{url}}')" target="_blank">Continue</button>
-    </div> 
-</div>
-<br>
-<p>BY SEETARAM NAIK 2023</p>
-</div>
-
-    <!-- JavaScript -->
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
-        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
-        crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
-        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
-        crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"
-        integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI"
-        crossorigin="anonymous"></script>
-
-    
-    <script>
-        
-            let x = '{{xx}}';
-            let num = x*100;
-            if (0<=x && x<0.50){
-                num = 100-num;
-            }
-            let txtx = num.toString();
-            if(x<=1 && x>=0.50){
-                var label = "Website is "+txtx +"% safe to use...";
-                document.getElementById("prediction").innerHTML = label;
-                document.getElementById("button1").style.display="block";
-            }
-            else if (0<=x && x<0.50){
-                var label = "Website is "+txtx +"% unsafe to use..."
-                document.getElementById("prediction").innerHTML = label ;
-                document.getElementById("button2").style.display="none";
-            }
-            
-        
-    </script>
+    <main>
+        <section>
+            <h2>👉 What is a Phishing Website?</h2>
+            <p>A phishing website is a fake website that is designed to look like a legitimate website in order to trick users into providing sensitive information, such as usernames, passwords, or credit card details.</p>
+            <p>Phishing websites are often distributed via email or social media messages that appear to be from a trusted source.</p>
+        </section>
+        <section>
+            <h2>👉 How to Detect a Phishing Website</h2>
+            <p>Here are some signs that a website may be a phishing website:</p>
+            <ul>
+                <li>The URL is slightly different from the legitimate website (e.g. paypal.com vs. paypa1.com)</li>
+                <li>The website has a lot of spelling or grammatical errors</li>
+                <li>The website asks for sensitive information that it shouldn't need (e.g. your Social Security number when signing up for a free trial)</li>
+                <li>The website uses a non-secure connection (HTTP instead of HTTPS)</li>
+            </ul>
+            <p>If you suspect that a website may be a phishing website, it's best to avoid entering any sensitive information and to report the website to the appropriate authorities.</p>
+        </section>
+        <section>
+            <h2>👉 Tools for Detecting Phishing Websites</h2>
+            <p>There are several tools available that can help you detect phishing websites:</p>
+            <ul class="links">
+                <li><a href="https://www.phishtank.com/">PhishTank</a> - A community-driven database of known phishing websites</li>
+                <li><a href="https://www.opendns.com/phishing-protection/">OpenDNS</a> - A service that can block access to known phishing websites</li>
+                <li><a href="https://www.avast.com/fake-site-detection">Avast Fake Site Detection</a> - A browser extension that can detect and block phishing websites</li>
+            </ul>
+        </section>
+    </main>
+    <center>
+        <div class="check-btn">
+            <a href="/predict">Check the URL here 🔎</a>
+        </div>
+    </center>
     
 </body>
-
 </html>
-
