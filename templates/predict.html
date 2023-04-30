@@ -40,7 +40,8 @@
            
         <br>
         <h3 id="output_pred"></h3>
-        <h3 id="prediction"></h3>
+        <h3 id="prediction1"></h3>
+        <h3 id="prediction2"></h3>
         <button class="button2" id="button2" role="button" onclick="window.open('{{url}}')" target="_blank" >Still want to Continue</button>
         <button class="button1" id="button1" role="button"  onclick="window.open('{{url}}')" target="_blank">Continue</button>
     </div> 
@@ -70,14 +71,17 @@
             }
             let txtx = num.toString();
             if(x<=1 && x>=0.50){
-                var label = "Website is "+txtx +"% safe to use...";
-                document.getElementById("prediction").innerHTML = label;
+                var label = "Website is "+txtx +"% safe to use 👍...";
+                document.getElementById("prediction1").innerHTML = label;
                 document.getElementById("button1").style.display="block";
+                document.getElementById("prediction2").style.display="none";
             }
             else if (0<=x && x<0.50){
-                var label = "Website is "+txtx +"% unsafe to use..."
-                document.getElementById("prediction").innerHTML = label ;
+                var label = "Website is "+txtx +"% unsafe to use 👎..."
+                document.getElementById("prediction2").innerHTML = label ;
                 document.getElementById("button2").style.display="none";
+                document.getElementById("prediction1").style.display="none";
+
             }
             
         

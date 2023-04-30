@@ -121,7 +121,7 @@ body {
   font-size: 100%;
   font-weight: 700;
   line-height: 24px;
-  margin: 0;
+  /* margin: 0; */
   outline: 2px solid transparent;
   padding: 1rem 1.5rem;
   text-align: center;
@@ -132,6 +132,7 @@ body {
   touch-action: manipulation;
   box-shadow: -6px 8px 10px rgba(81,41,10,0.1),0px 2px 2px rgba(81,41,10,0.2);
   display: none;
+  margin-left: 220px;
 }
 
 .button2{
@@ -163,8 +164,24 @@ body {
 }
 
 .right {
-  right: 0px;
+  right: 50px;
   width: 300px; 
+  font-size: 28px;
+}
+
+#prediction1{
+  background-color: #0a1a94;
+  color: #fff;
+  padding:30px;
+  border-radius: 40px;
+  text-align: center;
+}
+#prediction2{
+  background-color: #940a0a;
+  color: #fff;
+  padding:30px;
+  border-radius: 40px;
+  text-align: center;
 }
 
 @media (max-width: 576px) { 
