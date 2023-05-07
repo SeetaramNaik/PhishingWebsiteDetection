@@ -175,6 +175,7 @@ body {
   padding:30px;
   border-radius: 40px;
   text-align: center;
+  display: none;
 }
 #prediction2{
   background-color: #940a0a;
@@ -182,6 +183,7 @@ body {
   padding:30px;
   border-radius: 40px;
   text-align: center;
+  display: none;
 }
 
 @media (max-width: 576px) { 
@@ -192,3 +194,48 @@ body {
 .abc{
   width: 50%;
 }
+
+/* Add this to your styles.css file */
+@keyframes blink {
+  0% {
+    opacity: 1;
+  }
+
+  20%{
+    opacity: 1;
+  }
+ 
+  40%{
+    opacity: 1;
+  }
+  
+  60%{
+    opacity: 1;
+  }
+
+  80%{
+    opacity: 1;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+#prediction2 {
+  animation: blink 1.5s ease-in-out infinite;
+}
+
+
+
+/* @keyframes blink {
+  0%, 49.9% {
+    opacity: 0;
+  }
+  50%, 100% {
+    opacity: 1;
+  }
+}
+
+#prediction2 {
+  animation: blink 1.5s ease-in-out infinite;
+} */
